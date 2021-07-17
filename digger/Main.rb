@@ -125,7 +125,7 @@ class Main
     @dig.Input.detectjoy
     @dig.Scores.loadscores
     @dig.Sound.initsound
-    @dig.Scores.run
+    @dig.Scores.init
     @dig.Scores._updatescores(@dig.Scores.scores)
     @nplayers = 1
     loop do

@@ -1,3 +1,5 @@
+require "./ScoreStorage"
+
 class Scores
   attr_accessor :dig, :scores, :substr, :highbuf, :scorehigh, :scoreinit, :scoret, :score1, :score2, :nextbs1, :nextbs2, :hsbuf, :scorebuf, :bonusscore, :gotinitflag
 
@@ -35,13 +37,12 @@ class Scores
     end
 
     inx = Array.new()
-
     scx = Array.new()
 
     i = 0
     while i < 10
-      inx[i] = o[i][0]
-      scx[i] = o[i][1]
+      inx[i] = o[i].key
+      scx[i] = o[i].value
 
       i += 1
     end
@@ -132,6 +133,7 @@ class Scores
       getinitials()
       _updatescores(_submit(@scoreinit[0], @scoret))
       shufflehigh()
+      ScoreStorage.write_to_storage(self)
     else
       @dig.Main.cleartopline()
       @dig.Drawing.outtext("GAME OVER", 104, 0, 3, true)
@@ -310,8 +312,10 @@ class Scores
     return p
   end
 
-  def run
-    # TODO init ?!
+  def init
+    if !ScoreStorage.read_from_storage(self)
+      ScoreStorage.create_in_storage(self)
+    end
   end
 
   def scorebonus
